@@ -1,6 +1,6 @@
 -- load, update, draw
 
--- run immediately when the game loads - declare any variables here
+-- run immediately when the game loads 
 function love.load()
    -- target config
    target = {}
