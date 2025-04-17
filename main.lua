@@ -9,7 +9,9 @@ function love.load()
    target.radius = 50
 
    score = 0
-   timer = 10
+   timer = 0
+    -- define game state to track in gaming (game state one mean main menu)
+   gameState = 1
 
    -- font size
    gameFont = love.graphics.newFont(40)
@@ -32,6 +34,7 @@ function love.update(dt)
 
     if timer < 0 then
         timer = 0
+        gameState = 1
     end
 end
 
@@ -46,14 +49,20 @@ function love.draw()
 
     love.graphics.setColor(1, 1, 1)
     love.graphics.setFont(gameFont)
-    love.graphics.print(score, 0, 0)
+    love.graphics.print("Score: " .. score, 5, 5)
 
     -- timer (nearest integer)
-    love.graphics.print(math.ceil(timer), 300, 0)
+    love.graphics.print("Time: " .. math.ceil(timer), 300, 5)
+
+    -- main menu
+    if gameState == 1 then
+        love.graphics.printf("Click anywhere to begin!", 0, 250, love.graphics.getWidth(), "center")
+    end
 
     -- draw target
-    love.graphics.draw(sprites.target, target.x - target.radius, target.y - target.radius)
-
+    if gameState == 2 then
+        love.graphics.draw(sprites.target, target.x - target.radius, target.y - target.radius)
+    end
     -- draw crosshair
     love.graphics.draw(sprites.crosshairs, love.mouse.getX()-20, love.mouse.getY()-20)
 
@@ -62,13 +71,17 @@ end
 
 
 function love.mousepressed( x, y, button, istouch, presses )
-    if button == 1 then
+    if button == 1 and gameState == 2 then
         local mouseToTarget = distanceBetween(x, y, target.x, target.y)
         if mouseToTarget < target.radius then
             score = score + 1
             target.x = math.random(target.radius, love.graphics.getWidth() - target.radius)
             target.y = math.random(target.radius, love.graphics.getHeight() - target.radius)      
         end
+    elseif button == 1 and gameState == 1 then
+        gameState = 2
+        timer = 10
+        score = 0
     end
 end
 
