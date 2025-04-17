@@ -8,14 +8,20 @@ function love.load()
    target.radius = 50
 
    score = 0
-   timer = 0
+   timer = 10
 
    gameFont = love.graphics.newFont(40)
 end
 
 -- game loop (call every frame that game is running) - 60 fps
 function love.update(dt)
-    
+    if timer > 0 then
+        timer = timer - dt
+    end
+
+    if timer < 0 then
+        timer = 0
+    end
 end
 
 
@@ -27,6 +33,7 @@ function love.draw()
     love.graphics.setColor(1, 1, 1)
     love.graphics.setFont(gameFont)
     love.graphics.print(score, 0, 0)
+    love.graphics.print(math.ceil(timer), 300, 0)
 end  
 
 
