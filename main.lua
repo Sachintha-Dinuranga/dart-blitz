@@ -44,6 +44,9 @@ function love.draw()
     -- love.graphics.setColor(1, 0, 0)
     -- love.graphics.circle("fill", target.x, target.y, target.radius)
 
+    -- set window title
+    love.window.setTitle( "DartBlitz" )
+   
     -- set the background (need to draw first)
     love.graphics.draw(sprites.sky, 0, 0)
 
@@ -71,17 +74,22 @@ end
 
 
 function love.mousepressed( x, y, button, istouch, presses )
-    if button == 1 and gameState == 2 then
+    if gameState == 2 then
         local mouseToTarget = distanceBetween(x, y, target.x, target.y)
         if mouseToTarget < target.radius then
-            score = score + 1
+            if button == 1 then
+                score = score + 1
+            elseif button == 2 then
+                score = score + 2
+                timer = timer -1
+            end
             target.x = math.random(target.radius, love.graphics.getWidth() - target.radius)
             target.y = math.random(target.radius, love.graphics.getHeight() - target.radius)      
         elseif mouseToTarget > target.radius then
             if score > 0 then
                 score = score - 1
             end
-        end
+        end  
     elseif button == 1 and gameState == 1 then
         gameState = 2
         timer = 10
