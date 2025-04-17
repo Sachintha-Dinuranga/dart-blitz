@@ -2,6 +2,7 @@
 
 -- run immediately when the game loads - declare any variables here
 function love.load()
+   -- target config
    target = {}
    target.x = 300
    target.y = 300
@@ -10,7 +11,17 @@ function love.load()
    score = 0
    timer = 10
 
+   -- font size
    gameFont = love.graphics.newFont(40)
+
+   -- load sprites
+   sprites = {}
+   sprites.sky = love.graphics.newImage('sprites/sky.png')
+   sprites.target = love.graphics.newImage('sprites/target.png')
+   sprites.crosshairs = love.graphics.newImage('sprites/crosshairs.png')
+
+   -- hide the mouse pointer
+   love.mouse.setVisible(false)
 end
 
 -- game loop (call every frame that game is running) - 60 fps
@@ -27,13 +38,26 @@ end
 
 -- drawing graphic to the screen(anything invole graphic and images)
 function love.draw()
-    love.graphics.setColor(1, 0, 0)
-    love.graphics.circle("fill", target.x, target.y, target.radius)
+    -- love.graphics.setColor(1, 0, 0)
+    -- love.graphics.circle("fill", target.x, target.y, target.radius)
+
+    -- set the background (need to draw first)
+    love.graphics.draw(sprites.sky, 0, 0)
 
     love.graphics.setColor(1, 1, 1)
     love.graphics.setFont(gameFont)
     love.graphics.print(score, 0, 0)
+
+    -- timer (nearest integer)
     love.graphics.print(math.ceil(timer), 300, 0)
+
+    -- draw target
+    love.graphics.draw(sprites.target, target.x - target.radius, target.y - target.radius)
+
+    -- draw crosshair
+    love.graphics.draw(sprites.crosshairs, love.mouse.getX()-20, love.mouse.getY()-20)
+
+
 end  
 
 
